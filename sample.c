@@ -58,7 +58,7 @@ int send_appudp(const char *destip, int destport, int seconds, int delay, int so
     //This is DISCONNECT packet
     memcpy(buff_b, "\x0a\x8e\x52\xd7\x6f\xdf\xd2\xd7\x08", 9);
 
-    //Fill password in the Connect Packet
+    //Fill password in Connect Packet
     if(pass_len > 0) {
         memcpy(buff_a+17, passwd, pass_len);
         buff_a[13] = pass_len;
@@ -86,13 +86,13 @@ int send_appudp(const char *destip, int destport, int seconds, int delay, int so
         sidx = (sidx >= socket_num) ? 0 : sidx;
         sock = fds[sidx++];
 
-        //fill in random data in connect packet
+        //fill random data in connect packet
         make_random(buff_a);
 
         //send CONNECT packet to server
         sendto(sock, buff_a, buff_a_len, 0, (struct sockaddr *)&servaddr, sizeof(servaddr));
 
-        //fill in random data related to Connect packet
+        //fill random data in disconnect packet related to Connect packet
         memcpy(buff_b+1, buff_a+5,8);
 
         //send Disconnect packet
